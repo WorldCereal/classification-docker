@@ -3,7 +3,7 @@ FROM vito-docker-private.artifactory.vgt.vito.be/centos8.2:latest
 LABEL ESA World Cereal Processing Chain
 
 RUN sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/CentOS-PowerTools.repo || true && \
-    yum install python38-devel gcc-c++ gdal-devel python3-gdal && \
+    yum install -y python38-devel gcc-c++ gdal-devel python3-gdal && \
     rm -rf /root/.cache && \
     yum clean all && \
     rm -rf /var/cache/yum/*
