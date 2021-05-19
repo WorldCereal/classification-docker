@@ -5,7 +5,7 @@
 @Library('lib')_
 
 containerImageBuildPipeline {
-  dockerfile           = 'docker/Dockerfile'
+  dockerfile           = 'Dockerfile'
   docker_registry_prod = 'vito-docker.artifactory.vgt.vito.be'
   image_name           = 'worldcereal'
   run_tests            = false
