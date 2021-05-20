@@ -2,7 +2,7 @@ FROM vito-docker-private.artifactory.vgt.vito.be/centos8.2:latest
 
 LABEL ESA World Cereal Processing Chain
 
-ADD CIB_V1/RNN_models/ /data/worldcereal/benchmark_v2/CIB_V1/RNN_models/
+COPY CIB_V1/RNN_models/ /data/worldcereal/benchmark_v2/CIB_V1/RNN_models/
 
 RUN sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/CentOS-PowerTools.repo || true && \
     yum install -y python38-devel gcc-c++ gdal-devel python3-gdal && \
