@@ -26,4 +26,4 @@ For reference, most Python packages are installed under:
 
 In a production setup, you'll want to invoke worldcereal immediately:
 
-```docker run vito-docker-private-dev.artifactory.vgt.vito.be/worldcereal:20210520-5 worldcereal```
+```docker run vito-docker-private-dev.artifactory.vgt.vito.be/worldcereal:20210520-9 worldcereal  '["31UFS","50SMF"]' /tmp```
