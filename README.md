@@ -27,3 +27,5 @@ For reference, most Python packages are installed under:
 In a production setup, you'll want to invoke worldcereal immediately. This command also mounts Terrascope data locations:
 
 ```docker run docker run -v /data/MEP/DEM/COP-DEM_GLO-30_DTED:/data/MEP/DEM/COP-DEM_GLO-30_DTED:ro -v /data/MTDA/AgERA5:/data/MTDA/AgERA5:ro -v /data/worldcereal/data/s1_sigma0_tiled:/data/worldcereal/data/s1_sigma0_tiled:ro -v /data/MTDA/TERRASCOPE_Sentinel2/TOC_V2:/data/MTDA/TERRASCOPE_Sentinel2/TOC_V2:ro vito-docker-private-dev.artifactory.vgt.vito.be/worldcereal:20210520-9 worldcereal  '["31UFS","50SMF"]' /tmp```
+
+For fast debugging, add the '--debug' flag to process a smaller chunk of data. 
