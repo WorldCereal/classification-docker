@@ -1,4 +1,4 @@
-FROM vito-docker-private.artifactory.vgt.vito.be/centos8.2:latest
+FROM centos:centos8.2.2004
 
 LABEL ESA World Cereal Processing Chain
 
