@@ -28,7 +28,7 @@ RUN ${EWOC_CLASSIF_VENV}/bin/pip install --no-cache-dir -v --extra-index-url htt
 ENV GDAL_CACHEMAX 16
 ENV LOGURU_FORMAT='<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <cyan>{thread}</cyan>:<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>'
 
-# ADD entrypoint.sh /opt
-# RUN chmod +x /opt/entrypoint.sh
-# ENTRYPOINT [ "/opt/entrypoint.sh" ]
-# CMD [ "-h" ]
+ADD entrypoint.sh /opt
+RUN chmod +x /opt/entrypoint.sh
+ENTRYPOINT [ "/opt/entrypoint.sh" ]
+CMD [ "-h" ]
