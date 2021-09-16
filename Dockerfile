@@ -5,7 +5,8 @@ LABEL ESA World Cereal Processing Chain
 RUN sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/CentOS-PowerTools.repo || true && \
     yum install -y python38-devel gcc-c++ gdal-devel python3-gdal && \
     python3.8 -m pip install -I --upgrade "pip<20.3" && \
-    python3.8 -m pip install -v --extra-index-url https://artifactory.vgt.vito.be/api/pypi/python-packages/simple worldcereal>=0.3.2a1 && \
+    python3.8 -m pip install -v --extra-index-url https://artifactory.vgt.vito.be/api/pypi/python-packages/simple worldcereal>=0.3.2a1.20210916.256-develop
+ && \
     rm -rf /root/.cache && \
     yum clean all && \
     rm -rf /var/cache/yum/*
