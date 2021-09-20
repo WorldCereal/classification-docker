@@ -17,7 +17,7 @@ RUN apt-get update -y \
 && apt-get clean \
 && rm -rf /var/lib/apt/lists/*
 
-ARG EWOC_CLASSIF_VERSION=0.3.2
+ARG EWOC_CLASSIF_VERSION=0.3.2a1.20210916.256-develop
 LABEL EWOC_CLASSIF="${EWOC_CLASSIF_VERSION}"
 ENV EWOC_CLASSIF_VENV=/opt/ewoc_classif
 RUN python3 -m venv ${EWOC_CLASSIF_VENV}
