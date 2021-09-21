@@ -23,7 +23,8 @@ ENV EWOC_CLASSIF_VENV=/opt/ewoc_classif
 RUN python3 -m venv ${EWOC_CLASSIF_VENV}
 RUN source ${EWOC_CLASSIF_VENV}/bin/activate
 RUN ${EWOC_CLASSIF_VENV}/bin/pip install --upgrade "pip<20.3"
-RUN ${EWOC_CLASSIF_VENV}/bin/pip install --no-cache-dir -v --extra-index-url https://artifactory.vgt.vito.be/api/pypi/python-packages/simple worldcereal>=${EWOC_CLASSIF_VERSION} 
+ADD https://artifactory.vgt.vito.be/python-packages/worldcereal/0.3.2a1/worldcereal-0.3.2a1.20210916.256_develop-py3-none-any.whl /tmp
+RUN ${EWOC_CLASSIF_VENV}/bin/pip install --no-cache-dir -v --extra-index-url https://artifactory.vgt.vito.be/api/pypi/python-packages/simple /tmp/worldcereal-0.3.2a1.20210916.256_develop-py3-none-any.whl
 
 ENV GDAL_CACHEMAX 16
 ENV LOGURU_FORMAT='<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <cyan>{thread}</cyan>:<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>'
