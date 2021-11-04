@@ -24,7 +24,7 @@ RUN python3 -m venv ${EWOC_CLASSIF_VENV}
 RUN source ${EWOC_CLASSIF_VENV}/bin/activate
 RUN ${EWOC_CLASSIF_VENV}/bin/pip install --upgrade pip
 COPY worldcereal-${EWOC_CLASSIF_VERSION}.tar.gz /tmp
-RUN ${EWOC_CLASSIF_VENV}/bin/pip install /tmp/worldcereal-0.3.3a1.tar.gz --no-cache-dir \
+RUN ${EWOC_CLASSIF_VENV}/bin/pip install /tmp/worldcereal-${EWOC_CLASSIF_VERSION}.tar.gz --no-cache-dir \
     --extra-index-url https://artifactory.vgt.vito.be/api/pypi/python-packages/simple
 
 ENV GDAL_CACHEMAX 16
