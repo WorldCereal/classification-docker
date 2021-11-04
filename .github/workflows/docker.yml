@@ -54,7 +54,7 @@ jobs:
         uses: robinraju/release-downloader@v1.1
         with:
           repository: "WorldCereal/wc-classification"
-          tag: "${{ steps.cots-versions.outputs.EWOC_CLASSIF_VERSION }}"
+          tag: "v${{ steps.cots-versions.outputs.EWOC_CLASSIF_VERSION }}"
           fileName: "worldcereal-${{ steps.cots-versions.outputs.EWOC_CLASSIF_VERSION }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Build Docker images
