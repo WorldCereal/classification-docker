@@ -1,31 +1,54 @@
-# classification-docker
-Docker image creation for classification
+# EWoC classification processor - Docker image
 
+Docker image use to run the EWoC classification step
 
-## Getting started
-Logging in to the docker repo:
+## Build EWoC classification processor docker image
 
-```docker login vito-docker-private-dev.artifactory.vgt.vito.be```
-This is only needed once, and not for public repos.
+To build the docker image you need to have the following private python packages close to the Dockerfile:
 
-Pulling the image:
+- worldcereal
 
-```docker pull vito-docker-private-dev.artifactory.vgt.vito.be/worldcereal:20210520-5```
+You can now run the following command to build the docker image:
 
-For testing, you can open a bash shell in the image:
+```sh
+docker build --build-arg EWOC_CLASSIF_DOCKER_VERSION=$(git describe) --pull --rm -f "Dockerfile" -t ewoc_classif:$(git describe) "."
+```
 
-```docker run -it vito-docker-private-dev.artifactory.vgt.vito.be/worldcereal:20210520-5 /bin/bash```
+## Use EWoC classification processor docker image
 
-In that shell, you can simply run the 'worldcereal' command.
+### Retrieve EWoC classification processor docker image
 
-For reference, most Python packages are installed under:
+```sh
+docker login hfjcmwgl.gra5.container-registry.ovh.net -u ${harbor_username}
+docker pull hfjcmwgl.gra5.container-registry.ovh.net/world-cereal/ewoc_classif:${tag_name}
+```
 
-/usr/local/lib/python3.8/site-packages/
+### Local usage (outside Argo workflow)
 
-## Direct worldcereal invocation
+You need to pass to the docker image a file with some credentials with the option `--env-file /path/to/env.file`.
 
-In a production setup, you'll want to invoke worldcereal immediately. This command also mounts Terrascope data locations:
+This file contains the following variables (TBC):
 
-```docker run docker run -v /data/MEP/DEM/COP-DEM_GLO-30_DTED:/data/MEP/DEM/COP-DEM_GLO-30_DTED:ro -v /data/MTDA/AgERA5:/data/MTDA/AgERA5:ro -v /data/worldcereal/data/s1_sigma0_tiled:/data/worldcereal/data/s1_sigma0_tiled:ro -v /data/MTDA/TERRASCOPE_Sentinel2/TOC_V2:/data/MTDA/TERRASCOPE_Sentinel2/TOC_V2:ro vito-docker-private-dev.artifactory.vgt.vito.be/worldcereal:20210520-9 worldcereal  '["31UFS","50SMF"]' /tmp```
+- EWOC_S3_ACCESS_KEY_ID
+- EWOC_S3_SECRET_ACCESS_KEY
 
-For fast debugging, add the '--debug' flag to process a smaller chunk of data. 
+#### Generate a specific S2 tile
+
+To run the generation of a specific S2 tile ID:
+
+:warning: Adapt the `tag_name` to the right one
+
+```sh
+docker run -v /path/to/conf_dir:/data --rm --env-file /local/path/to/env.file ewoc_classif:${tag_name} 36MXB /data/config.json /tmp 
+```
+
+For more option cf. worldcereal documenation or run:
+
+```sh
+docker run --rm -it ewoc_classif:${tag_name}
+```
+
+## How to release
+
+The release of new docker image is made through Github Action to the EWoC docker registry.
+When develop is ready and functional, you can merge into main. After you must tag in main branch a new version with `git tag -a tag_name` command with `tag_name` following [semver](https://semver.org/).

@@ -30,7 +30,11 @@ RUN ${EWOC_CLASSIF_VENV}/bin/pip install /tmp/worldcereal-${EWOC_CLASSIF_VERSION
 ENV GDAL_CACHEMAX 16
 ENV LOGURU_FORMAT='<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <cyan>{thread}</cyan>:<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>'
 
+ARG EWOC_CLASSIF_DOCKER_VERSION='dev'
+ENV EWOC_CLASSIF_DOCKER_VERSION=${EWOC_CLASSIF_DOCKER_VERSION}
+LABEL version=${EWOC_CLASSIF_DOCKER_VERSION}
+
 ADD entrypoint.sh /opt
 RUN chmod +x /opt/entrypoint.sh
 ENTRYPOINT [ "/opt/entrypoint.sh" ]
-CMD [ "-h" ]
+CMD [ "--help" ]
