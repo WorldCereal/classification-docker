@@ -61,7 +61,7 @@ jobs:
         uses: robinraju/release-downloader@v1.1
         with:
           repository: "WorldCereal/ewoc_dataship"
-          tag: "v${{ steps.cots-versions.outputs.EWOC_DAG }}"
+          tag: "${{ steps.cots-versions.outputs.EWOC_DAG }}"
           fileName: "ewoc_dag-${{ steps.cots-versions.outputs.EWOC_DAG }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Download Classification wrapper package
