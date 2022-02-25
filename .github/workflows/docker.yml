@@ -53,9 +53,23 @@ jobs:
       - name: Download Classification package
         uses: robinraju/release-downloader@v1.1
         with:
-          repository: "WorldCereal/wc-classification"
+          repository: "WorldCereal/ewoc_classif"
           tag: "v${{ steps.cots-versions.outputs.EWOC_CLASSIF_VERSION }}"
-          fileName: "worldcereal-${{ steps.cots-versions.outputs.EWOC_CLASSIF_VERSION }}.tar.gz"
+          fileName: "ewoc_classif-${{ steps.cots-versions.outputs.EWOC_CLASSIF_VERSION }}.tar.gz"
+          token: ${{ secrets.CS_ORG_TOKEN }}
+      - name: Download ewoc_dag
+        uses: robinraju/release-downloader@v1.1
+        with:
+          repository: "WorldCereal/ewoc_dataship"
+          tag: "v${{ steps.cots-versions.outputs.EWOC_DAG }}"
+          fileName: "ewoc_dag-${{ steps.cots-versions.outputs.EWOC_DAG }}.tar.gz"
+          token: ${{ secrets.CS_ORG_TOKEN }}
+      - name: Download Classification wrapper package
+        uses: robinraju/release-downloader@v1.1
+        with:
+          repository: "WorldCereal/wc-classification"
+          tag: "v${{ steps.cots-versions.outputs.WORLDCEREAL_CLASSIF_VERSION }}"
+          fileName: "worldcereal-${{ steps.cots-versions.outputs.WORLDCEREAL_CLASSIF_VERSION }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Build Docker images
         uses: docker/build-push-action@v2.5.0
