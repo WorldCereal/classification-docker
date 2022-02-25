@@ -54,7 +54,7 @@ jobs:
         uses: robinraju/release-downloader@v1.1
         with:
           repository: "WorldCereal/ewoc_classif"
-          tag: "v${{ steps.cots-versions.outputs.EWOC_CLASSIF_VERSION }}"
+          tag: "${{ steps.cots-versions.outputs.EWOC_CLASSIF_VERSION }}"
           fileName: "ewoc_classif-${{ steps.cots-versions.outputs.EWOC_CLASSIF_VERSION }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Download ewoc_dag
