@@ -26,14 +26,15 @@ ENV EWOC_CLASSIF_VENV=/opt/ewoc_classif_venv
 
 RUN python3 -m venv ${EWOC_CLASSIF_VENV}
 RUN source ${EWOC_CLASSIF_VENV}/bin/activate
-RUN ${EWOC_CLASSIF_VENV}/bin/pip install --upgrade pip
+## Limit pip and setuptools version to to avoid issue with rebuild and major upgrade version
+RUN ${EWOC_CLASSIF_VENV}/bin/pip install "pip<22" --upgrade --no-cache-dir\
+    && ${EWOC_CLASSIF_VENV}/bin/pip install "setuptools<61" --upgrade --no-cache-dir
 
 COPY worldcereal-${WORLDCEREAL_CLASSIF_VERSION}.tar.gz /tmp
 COPY ewoc_classif-${EWOC_CLASSIF_VERSION}.tar.gz /tmp
 COPY ewoc_dag-${EWOC_DAG}.tar.gz /tmp
 
-RUN ${EWOC_CLASSIF_VENV}/bin/pip install setuptools --upgrade --no-cache-dir\
-    && ${EWOC_CLASSIF_VENV}/bin/pip install pygdal==3.0.4.10 --no-cache-dir\
+RUN ${EWOC_CLASSIF_VENV}/bin/pip install "pygdal==$(gdal-config --version).*" --no-cache-dir\
     && ${EWOC_CLASSIF_VENV}/bin/pip install satio==1.1.5.dev20211123+develop.5 --no-cache-dir \
     --extra-index-url https://artifactory.vgt.vito.be/api/pypi/python-packages/simple\
     && ${EWOC_CLASSIF_VENV}/bin/pip install /tmp/worldcereal-${WORLDCEREAL_CLASSIF_VERSION}.tar.gz --no-cache-dir \
