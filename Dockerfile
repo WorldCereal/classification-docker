@@ -17,9 +17,9 @@ RUN apt-get update -y \
 && apt-get clean \
 && rm -rf /var/lib/apt/lists/*
 
-ARG WORLDCEREAL_CLASSIF_VERSION=0.4.0
-ARG EWOC_CLASSIF_VERSION=0.2.1
-ARG EWOC_DAG=0.7.0
+ARG WORLDCEREAL_CLASSIF_VERSION=0.6.0
+ARG EWOC_CLASSIF_VERSION=0.4.0
+ARG EWOC_DAG=0.7.1
 
 LABEL EWOC_CLASSIF="${WORLDCEREAL_CLASSIF_VERSION}"
 ENV EWOC_CLASSIF_VENV=/opt/ewoc_classif_venv
@@ -35,8 +35,6 @@ COPY ewoc_classif-${EWOC_CLASSIF_VERSION}.tar.gz /tmp
 COPY ewoc_dag-${EWOC_DAG}.tar.gz /tmp
 
 RUN ${EWOC_CLASSIF_VENV}/bin/pip install "pygdal==$(gdal-config --version).*" --no-cache-dir\
-    && ${EWOC_CLASSIF_VENV}/bin/pip install satio==1.1.5.dev20211123+develop.5 --no-cache-dir \
-    --extra-index-url https://artifactory.vgt.vito.be/api/pypi/python-packages/simple\
     && ${EWOC_CLASSIF_VENV}/bin/pip install /tmp/worldcereal-${WORLDCEREAL_CLASSIF_VERSION}.tar.gz --no-cache-dir \
     --extra-index-url https://artifactory.vgt.vito.be/api/pypi/python-packages/simple \
     && ${EWOC_CLASSIF_VENV}/bin/pip install  /tmp/ewoc_dag-${EWOC_DAG}.tar.gz --no-cache-dir\
