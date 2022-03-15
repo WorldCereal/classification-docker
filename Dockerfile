@@ -17,15 +17,28 @@ RUN apt-get update -y \
 && apt-get clean \
 && rm -rf /var/lib/apt/lists/*
 
-ARG EWOC_CLASSIF_VERSION=0.3.2.post1
-LABEL EWOC_CLASSIF="${EWOC_CLASSIF_VERSION}"
+ARG WORLDCEREAL_CLASSIF_VERSION=0.6.0
+ARG EWOC_CLASSIF_VERSION=0.4.0
+ARG EWOC_DAG=0.7.1
+
+LABEL EWOC_CLASSIF="${WORLDCEREAL_CLASSIF_VERSION}"
 ENV EWOC_CLASSIF_VENV=/opt/ewoc_classif_venv
+
 RUN python3 -m venv ${EWOC_CLASSIF_VENV}
 RUN source ${EWOC_CLASSIF_VENV}/bin/activate
-RUN ${EWOC_CLASSIF_VENV}/bin/pip install --upgrade pip
-COPY worldcereal-${EWOC_CLASSIF_VERSION}.tar.gz /tmp
-RUN ${EWOC_CLASSIF_VENV}/bin/pip install /tmp/worldcereal-${EWOC_CLASSIF_VERSION}.tar.gz --no-cache-dir \
-    --extra-index-url https://artifactory.vgt.vito.be/api/pypi/python-packages/simple
+## Limit pip and setuptools version to to avoid issue with rebuild and major upgrade version
+RUN ${EWOC_CLASSIF_VENV}/bin/pip install "pip<22" --upgrade --no-cache-dir\
+    && ${EWOC_CLASSIF_VENV}/bin/pip install "setuptools<61" --upgrade --no-cache-dir
+
+COPY worldcereal-${WORLDCEREAL_CLASSIF_VERSION}.tar.gz /tmp
+COPY ewoc_classif-${EWOC_CLASSIF_VERSION}.tar.gz /tmp
+COPY ewoc_dag-${EWOC_DAG}.tar.gz /tmp
+
+RUN ${EWOC_CLASSIF_VENV}/bin/pip install "pygdal==$(gdal-config --version).*" --no-cache-dir\
+    && ${EWOC_CLASSIF_VENV}/bin/pip install /tmp/worldcereal-${WORLDCEREAL_CLASSIF_VERSION}.tar.gz --no-cache-dir \
+    --extra-index-url https://artifactory.vgt.vito.be/api/pypi/python-packages/simple \
+    && ${EWOC_CLASSIF_VENV}/bin/pip install  /tmp/ewoc_dag-${EWOC_DAG}.tar.gz --no-cache-dir\
+    && ${EWOC_CLASSIF_VENV}/bin/pip install  /tmp/ewoc_classif-${EWOC_CLASSIF_VERSION}.tar.gz --no-cache-dir
 
 ENV GDAL_CACHEMAX 16
 ENV LOGURU_FORMAT='<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <cyan>{thread}</cyan>:<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>'
