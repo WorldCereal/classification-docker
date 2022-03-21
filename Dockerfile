@@ -19,7 +19,7 @@ RUN apt-get update -y \
 
 ARG WORLDCEREAL_CLASSIF_VERSION=0.6.0
 ARG EWOC_CLASSIF_VERSION=0.4.1
-ARG EWOC_DAG=0.7.1
+ARG EWOC_DAG=0.7.2
 
 LABEL EWOC_CLASSIF="${WORLDCEREAL_CLASSIF_VERSION}"
 ENV EWOC_CLASSIF_VENV=/opt/ewoc_classif_venv
@@ -38,7 +38,9 @@ RUN ${EWOC_CLASSIF_VENV}/bin/pip install "pygdal==$(gdal-config --version).*" --
     && ${EWOC_CLASSIF_VENV}/bin/pip install /tmp/worldcereal-${WORLDCEREAL_CLASSIF_VERSION}.tar.gz --no-cache-dir \
     --extra-index-url https://artifactory.vgt.vito.be/api/pypi/python-packages/simple \
     && ${EWOC_CLASSIF_VENV}/bin/pip install  /tmp/ewoc_dag-${EWOC_DAG}.tar.gz --no-cache-dir\
-    && ${EWOC_CLASSIF_VENV}/bin/pip install  /tmp/ewoc_classif-${EWOC_CLASSIF_VERSION}.tar.gz --no-cache-dir
+    && ${EWOC_CLASSIF_VENV}/bin/pip install  /tmp/ewoc_classif-${EWOC_CLASSIF_VERSION}.tar.gz --no-cache-dir\
+    && ${EWOC_CLASSIF_VENV}/bin/pip install  boto3 --no-cache-dir\
+    && ${EWOC_CLASSIF_VENV}/bin/pip install  psycopg2-binary --no-cache-dir
 
 ENV GDAL_CACHEMAX 16
 ENV LOGURU_FORMAT='<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <cyan>{thread}</cyan>:<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>'
