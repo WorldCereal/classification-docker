@@ -7,48 +7,50 @@ ENV LANG=en_US.utf8
 SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update -y \
+&& DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common \
+&& apt-get update -y \
+&& add-apt-repository ppa:ubuntugis/ppa\
 && DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing --no-install-recommends \
     python3 \
     python3-dev \
     python3-pip \
     python3-venv \
     libgdal-dev \
+    gdal-bin\
     g++ \
 && apt-get clean \
 && rm -rf /var/lib/apt/lists/*
 
-ARG WORLDCEREAL_CLASSIF_VERSION=0.6.2
-ARG EWOC_CLASSIF_VERSION=0.4.7
-ARG EWOC_DAG=0.7.3
-
-LABEL EWOC_CLASSIF="${WORLDCEREAL_CLASSIF_VERSION}"
 ENV EWOC_CLASSIF_VENV=/opt/ewoc_classif_venv
-
 RUN python3 -m venv ${EWOC_CLASSIF_VENV}
 RUN source ${EWOC_CLASSIF_VENV}/bin/activate
-## Limit pip and setuptools version to to avoid issue with rebuild and major upgrade version
-RUN ${EWOC_CLASSIF_VENV}/bin/pip install "pip<22" --upgrade --no-cache-dir\
-    && ${EWOC_CLASSIF_VENV}/bin/pip install "setuptools<61" --upgrade --no-cache-dir
-
-COPY worldcereal-${WORLDCEREAL_CLASSIF_VERSION}.tar.gz /tmp
-COPY ewoc_classif-${EWOC_CLASSIF_VERSION}.tar.gz /tmp
-COPY ewoc_dag-${EWOC_DAG}.tar.gz /tmp
-
-RUN ${EWOC_CLASSIF_VENV}/bin/pip install "pygdal==$(gdal-config --version).*" --no-cache-dir\
-    && ${EWOC_CLASSIF_VENV}/bin/pip install /tmp/worldcereal-${WORLDCEREAL_CLASSIF_VERSION}.tar.gz --no-cache-dir \
-    --extra-index-url https://artifactory.vgt.vito.be/api/pypi/python-packages/simple \
-    && ${EWOC_CLASSIF_VENV}/bin/pip install  /tmp/ewoc_dag-${EWOC_DAG}.tar.gz --no-cache-dir\
-    && ${EWOC_CLASSIF_VENV}/bin/pip install  /tmp/ewoc_classif-${EWOC_CLASSIF_VERSION}.tar.gz --no-cache-dir\
-    && ${EWOC_CLASSIF_VENV}/bin/pip install  boto3 --no-cache-dir\
-    && ${EWOC_CLASSIF_VENV}/bin/pip install  psycopg2-binary --no-cache-dir
 
 ENV GDAL_CACHEMAX 16
 ENV LOGURU_FORMAT='<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <cyan>{thread}</cyan>:<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>'
 
-ARG EWOC_CLASSIF_DOCKER_VERSION='dev'
+## Limit pip and setuptools version to to avoid issue with rebuild and major upgrade version
+RUN ${EWOC_CLASSIF_VENV}/bin/pip install "pip<22" --upgrade --no-cache-dir\
+    && ${EWOC_CLASSIF_VENV}/bin/pip install "setuptools<61" --upgrade --no-cache-dir
+
+ARG WORLDCEREAL_CLASSIF_VERSION=0.6.3
+COPY worldcereal-${WORLDCEREAL_CLASSIF_VERSION}.tar.gz /tmp
+RUN ${EWOC_CLASSIF_VENV}/bin/pip install "pygdal==$(gdal-config --version).*" --no-cache-dir\
+    && ${EWOC_CLASSIF_VENV}/bin/pip install /tmp/worldcereal-${WORLDCEREAL_CLASSIF_VERSION}.tar.gz --no-cache-dir --extra-index-url https://artifactory.vgt.vito.be/api/pypi/python-packages/simple
+
+ARG EWOC_CLASSIF_DOCKER_VERSION='0.2.8'
 ENV EWOC_CLASSIF_DOCKER_VERSION=${EWOC_CLASSIF_DOCKER_VERSION}
 LABEL version=${EWOC_CLASSIF_DOCKER_VERSION}
+LABEL EWOC_CLASSIF="${WORLDCEREAL_CLASSIF_VERSION}"
 
+ARG EWOC_CLASSIF_VERSION=0.2.1.post1.dev50+g8a2cd49
+ARG EWOC_DAG=0.7.3
+COPY ewoc_classif-${EWOC_CLASSIF_VERSION}.tar.gz /tmp
+COPY ewoc_dag-${EWOC_DAG}.tar.gz /tmp
+
+RUN ${EWOC_CLASSIF_VENV}/bin/pip install  /tmp/ewoc_dag-${EWOC_DAG}.tar.gz --no-cache-dir\
+    && ${EWOC_CLASSIF_VENV}/bin/pip install  /tmp/ewoc_classif-${EWOC_CLASSIF_VERSION}.tar.gz --no-cache-dir\
+    && ${EWOC_CLASSIF_VENV}/bin/pip install  boto3 --no-cache-dir\
+    && ${EWOC_CLASSIF_VENV}/bin/pip install  psycopg2-binary --no-cache-dir
 ADD entrypoint.sh /opt
 RUN chmod +x /opt/entrypoint.sh
 ENTRYPOINT [ "/opt/entrypoint.sh" ]
