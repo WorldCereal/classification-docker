@@ -25,7 +25,7 @@ ENV EWOC_CLASSIF_VENV=/opt/ewoc_classif_venv
 RUN python3 -m venv ${EWOC_CLASSIF_VENV}
 RUN source ${EWOC_CLASSIF_VENV}/bin/activate
 
-ENV GDAL_CACHEMAX 16
+ENV GDAL_CACHEMAX=2000
 ENV LOGURU_FORMAT='<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <cyan>{thread}</cyan>:<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>'
 
 ## Limit pip and setuptools version to to avoid issue with rebuild and major upgrade version
@@ -42,7 +42,7 @@ ENV EWOC_CLASSIF_DOCKER_VERSION=${EWOC_CLASSIF_DOCKER_VERSION}
 LABEL version=${EWOC_CLASSIF_DOCKER_VERSION}
 LABEL EWOC_CLASSIF="${WORLDCEREAL_CLASSIF_VERSION}"
 
-ARG EWOC_CLASSIF_VERSION=0.2.1.post1.dev50+g8a2cd49
+ARG EWOC_CLASSIF_VERSION=0.4.8
 ARG EWOC_DAG=0.7.3
 COPY ewoc_classif-${EWOC_CLASSIF_VERSION}.tar.gz /tmp
 COPY ewoc_dag-${EWOC_DAG}.tar.gz /tmp
