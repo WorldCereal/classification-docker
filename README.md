@@ -22,19 +22,34 @@ docker build --build-arg EWOC_CLASSIF_DOCKER_VERSION=$(git describe) --pull --rm
 
 ### Retrieve EWoC classification processor docker image
 
+From OVH harbor
 ```sh
 docker login 643vlk6z.gra7.container-registry.ovh.net -u ${harbor_username}
 docker pull 643vlk6z.gra7.container-registry.ovh.net/world-cereal/ewoc_classif:${tag_name}
 ```
-
+From AWS ECR
+```sh
+aws ecr get-login-password --region region | docker login --username AWS --password-stdin aws_account_id.dkr.ecr.region.amazonaws.com
+docker pull aws_account_id.dkr.ecr.region.amazonaws.com/world-cereal/ewoc_classif:${tag_name}
+```
 ### Local usage (outside Argo workflow)
 
 You need to pass to the docker image a file with some credentials with the option `--env-file /path/to/env.file`.
 
-This file must contains the following variables:
+This file must contain the following variables:
 
 - EWOC_S3_ACCESS_KEY_ID
 - EWOC_S3_SECRET_ACCESS_KEY
+- EWOC_ENDPOINT_URL
+- AWS_ACCESS_KEY_ID
+- AWS_SECRET_ACCESS_KEY
+- EWOC_BLOCKSIZE=1024
+- GDAL_CACHEMAX=2000
+- AGERA5_BUCKET=ewoc-agera5-yearly
+- PRD_BUCKET=ewoc-prd-dev [Optional]
+- EWOC_CLOUD_PROVIDER= aws [or creodias]
+- EWOC_DEV_MODE=True
+- EWOC_REGION_NAME
 
 #### Generate a specific S2 tile
 
@@ -42,10 +57,20 @@ To run the generation of a specific S2 tile ID:
 
 :warning: Adapt the `tag_name` to the right one
 
+Cropland for one block
 ```sh
-docker run --rm --env-file /local/path/to/env.file ewoc_classif:${tag_name} ewoc_classif 36MXB -v
+docker run --rm --env-file /local/path/to/env.file ewoc_classif:${tag_name} ewoc_classif ewoc_classif <s2 tile id> <production_id> --end-season-year 2021 --model-version v502 --irr-model-version v420 --block-ids 89
+```
+Summer1
+```sh
+docker run --rm --env-file /local/path/to/env.file ewoc_classif:${tag_name} ewoc_classif ewoc_classif <s2 tile id> <production_id> --end-season-year 2021 --ewoc-detector croptype --ewoc-season summer1 --model-version v502 --irr-model-version v420 --block-ids 89
 ```
 
+Post-processing (mosaic)
+Cropland mosaic for a s2 tile
+```sh
+docker run --rm --env-file /local/path/to/env.file ewoc_classif:${tag_name} ewoc_classif ewoc_classif <s2 tile id> <production_id> --end-season-year 2021 --model-version v502 --irr-model-version v420 --postprocess True
+```
 For more options please read the [ewoc_classif readme](https://github.com/WorldCereal/ewoc_classif#readme) or run:
 
 ```sh
