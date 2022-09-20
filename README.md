@@ -50,6 +50,7 @@ This file must contain the following variables:
 - EWOC_CLOUD_PROVIDER= aws [or creodias]
 - EWOC_DEV_MODE=True
 - EWOC_REGION_NAME
+- LOCAL_MODELS: Set this variable to true to use local models, otherwise don't use it or unset it
 
 #### Generate a specific S2 tile
 
@@ -59,17 +60,17 @@ To run the generation of a specific S2 tile ID:
 
 Cropland for one block
 ```sh
-docker run --rm --env-file /local/path/to/env.file ewoc_classif:${tag_name} ewoc_classif ewoc_classif <s2 tile id> <production_id> --end-season-year 2021 --model-version v502 --irr-model-version v420 --block-ids 89
+docker run --rm --env-file /local/path/to/env.file ewoc_classif:${tag_name} ewoc_classif ewoc_classif <s2 tile id> <production_id> --end-season-year 2021 --cropland-model-version v512 --croptype-model-version v502 --irr-model-version v420 --block-ids 89
 ```
 Summer1
 ```sh
-docker run --rm --env-file /local/path/to/env.file ewoc_classif:${tag_name} ewoc_classif ewoc_classif <s2 tile id> <production_id> --end-season-year 2021 --ewoc-detector croptype --ewoc-season summer1 --model-version v502 --irr-model-version v420 --block-ids 89
+docker run --rm --env-file /local/path/to/env.file ewoc_classif:${tag_name} ewoc_classif ewoc_classif <s2 tile id> <production_id> --end-season-year 2021 --ewoc-detector croptype --ewoc-season summer1 --cropland-model-version v512 --croptype-model-version v502 --irr-model-version v420 --block-ids 89
 ```
 
 Post-processing (mosaic)
 Cropland mosaic for a s2 tile
 ```sh
-docker run --rm --env-file /local/path/to/env.file ewoc_classif:${tag_name} ewoc_classif ewoc_classif <s2 tile id> <production_id> --end-season-year 2021 --model-version v502 --irr-model-version v420 --postprocess True
+docker run --rm --env-file /local/path/to/env.file ewoc_classif:${tag_name} ewoc_classif ewoc_classif <s2 tile id> <production_id> --end-season-year 2021 --cropland-model-version v512 --croptype-model-version v502 --irr-model-version v420 --postprocess True
 ```
 For more options please read the [ewoc_classif readme](https://github.com/WorldCereal/ewoc_classif#readme) or run:
 
@@ -79,5 +80,5 @@ docker run --rm -it ewoc_classif:${tag_name} ewoc_classif --help
 
 ## How to release
 
-The release of new docker image is made through Github Action to the EWoC docker registry.
+The release of new docker image is made through GitHub Action to the EWoC docker registry.
 When develop is ready and functional, you can merge into main. After you must tag in main branch a new version with `git tag -a tag_name` command with `tag_name` following [semver](https://semver.org/).
