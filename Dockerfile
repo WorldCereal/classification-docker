@@ -52,6 +52,7 @@ RUN ${EWOC_CLASSIF_VENV}/bin/pip install  /tmp/ewoc_dag-${EWOC_DAG}.tar.gz --no-
     && ${EWOC_CLASSIF_VENV}/bin/pip install  boto3 --no-cache-dir\
     && ${EWOC_CLASSIF_VENV}/bin/pip install  psycopg2-binary --no-cache-dir \
     && ${EWOC_CLASSIF_VENV}/bin/pip install  protobuf==3.20.0 --no-cache-dir \
+    && ${EWOC_CLASSIF_VENV}/bin/pip install  rasterio==1.2.1O --no-cache-dir \
     && ${EWOC_CLASSIF_VENV}/bin/pip install zarr==2.12.0 --no-cache-dir
 ADD entrypoint.sh /opt
 RUN chmod +x /opt/entrypoint.sh
