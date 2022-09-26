@@ -37,13 +37,13 @@ COPY worldcereal-${WORLDCEREAL_CLASSIF_VERSION}.tar.gz /tmp
 RUN ${EWOC_CLASSIF_VENV}/bin/pip install "pygdal==$(gdal-config --version).*" --no-cache-dir\
     && ${EWOC_CLASSIF_VENV}/bin/pip install /tmp/worldcereal-${WORLDCEREAL_CLASSIF_VERSION}.tar.gz --no-cache-dir --extra-index-url https://artifactory.vgt.vito.be/api/pypi/python-packages/simple
 
-ARG EWOC_CLASSIF_DOCKER_VERSION='0.4.8'
+ARG EWOC_CLASSIF_DOCKER_VERSION='0.4.9'
 ENV EWOC_CLASSIF_DOCKER_VERSION=${EWOC_CLASSIF_DOCKER_VERSION}
 LABEL version=${EWOC_CLASSIF_DOCKER_VERSION}
 LABEL EWOC_CLASSIF="${WORLDCEREAL_CLASSIF_VERSION}"
 
-ARG EWOC_CLASSIF_VERSION=0.6.2
-ARG EWOC_DAG=0.8.1
+ARG EWOC_CLASSIF_VERSION=0.6.3
+ARG EWOC_DAG=0.8.3
 COPY ewoc_classif-${EWOC_CLASSIF_VERSION}.tar.gz /tmp
 COPY ewoc_dag-${EWOC_DAG}.tar.gz /tmp
 
@@ -51,9 +51,8 @@ RUN ${EWOC_CLASSIF_VENV}/bin/pip install  /tmp/ewoc_dag-${EWOC_DAG}.tar.gz --no-
     && ${EWOC_CLASSIF_VENV}/bin/pip install  /tmp/ewoc_classif-${EWOC_CLASSIF_VERSION}.tar.gz --no-cache-dir\
     && ${EWOC_CLASSIF_VENV}/bin/pip install  boto3 --no-cache-dir\
     && ${EWOC_CLASSIF_VENV}/bin/pip install  psycopg2-binary --no-cache-dir \
-    && ${EWOC_CLASSIF_VENV}/bin/pip install  protobuf==3.20.0 --no-cache-dir \
-    && ${EWOC_CLASSIF_VENV}/bin/pip install  rasterio==1.2.10 --no-cache-dir \
-    && ${EWOC_CLASSIF_VENV}/bin/pip install zarr==2.12.0 --no-cache-dir
+    && ${EWOC_CLASSIF_VENV}/bin/pip install  rasterio==1.2.10 --no-cache-dir
+
 ADD entrypoint.sh /opt
 RUN chmod +x /opt/entrypoint.sh
 ENTRYPOINT [ "/opt/entrypoint.sh" ]
