@@ -18,8 +18,14 @@ RUN apt-get update -y \
     libgdal-dev \
     gdal-bin\
     g++ \
+    wget\
 && apt-get clean \
 && rm -rf /var/lib/apt/lists/*
+
+# Add biomes
+ENV EWOC_AUXDATA=/auxdata/
+RUN mkdir ${EWOC_AUXDATA}  \
+    && wget -qO- https://artifactory.vgt.vito.be/auxdata-public/worldcereal/auxdata/biomes.tar.gz | tar xvz -C ${EWOC_AUXDATA}
 
 ENV EWOC_CLASSIF_VENV=/opt/ewoc_classif_venv
 RUN python3 -m venv ${EWOC_CLASSIF_VENV}
