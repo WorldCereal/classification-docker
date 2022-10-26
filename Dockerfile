@@ -27,6 +27,10 @@ ENV EWOC_AUXDATA=/auxdata/
 RUN mkdir ${EWOC_AUXDATA}  \
     && wget -qO- https://artifactory.vgt.vito.be/auxdata-public/worldcereal/auxdata/biomes.tar.gz | tar xvz -C ${EWOC_AUXDATA}
 
+# Add models from s3
+RUN wget "https://ewoc-aux-data.s3.eu-central-1.amazonaws.com/models/models_cropland_605_croptype_502_irr_420.tar.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXJWPWGFXGK4RNF7R%2F20221026%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20221026T130135Z&X-Amz-Expires=14400&X-Amz-SignedHeaders=host&X-Amz-Signature=8cf363b0eb4e56e0f53de57ed8cbee58faafee276f8ea3ec48a7c3d4e5825c55" -O /tmp/models_cropland_605_croptype_502_irr_420.tar.gz  \
+    && tar -xzf /tmp/models_cropland_605_croptype_502_irr_420.tar.gz --strip-components 1 -C / && rm /tmp/models_cropland_605_croptype_502_irr_420.tar.gz
+
 ENV EWOC_CLASSIF_VENV=/opt/ewoc_classif_venv
 RUN python3 -m venv ${EWOC_CLASSIF_VENV}
 RUN source ${EWOC_CLASSIF_VENV}/bin/activate
@@ -38,18 +42,18 @@ ENV LOGURU_FORMAT='<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level
 RUN ${EWOC_CLASSIF_VENV}/bin/pip install "pip<22" --upgrade --no-cache-dir\
     && ${EWOC_CLASSIF_VENV}/bin/pip install "setuptools<61" --upgrade --no-cache-dir
 
-ARG WORLDCEREAL_CLASSIF_VERSION=1.0.6
+ARG WORLDCEREAL_CLASSIF_VERSION=1.0.7
 COPY worldcereal-${WORLDCEREAL_CLASSIF_VERSION}.tar.gz /tmp
 RUN ${EWOC_CLASSIF_VENV}/bin/pip install "pygdal==$(gdal-config --version).*" --no-cache-dir\
     && ${EWOC_CLASSIF_VENV}/bin/pip install /tmp/worldcereal-${WORLDCEREAL_CLASSIF_VERSION}.tar.gz --no-cache-dir --extra-index-url https://artifactory.vgt.vito.be/api/pypi/python-packages/simple
 
-ARG EWOC_CLASSIF_DOCKER_VERSION='0.4.9'
+ARG EWOC_CLASSIF_DOCKER_VERSION='0.5.0'
 ENV EWOC_CLASSIF_DOCKER_VERSION=${EWOC_CLASSIF_DOCKER_VERSION}
 LABEL version=${EWOC_CLASSIF_DOCKER_VERSION}
 LABEL EWOC_CLASSIF="${WORLDCEREAL_CLASSIF_VERSION}"
 
-ARG EWOC_CLASSIF_VERSION=0.6.3
-ARG EWOC_DAG=0.8.3
+ARG EWOC_CLASSIF_VERSION=0.6.4
+ARG EWOC_DAG=0.8.4
 COPY ewoc_classif-${EWOC_CLASSIF_VERSION}.tar.gz /tmp
 COPY ewoc_dag-${EWOC_DAG}.tar.gz /tmp
 
