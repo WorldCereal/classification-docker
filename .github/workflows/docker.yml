@@ -50,7 +50,7 @@ jobs:
         id: cots-versions
         run: |
           sed -n '/^ARG/s/ARG *\(.*\)=\(.*\)/::set-output name=\1::\2/p' Dockerfile
-      - name: Download Classification package
+      - name: Download Classification wrapper package
         uses: robinraju/release-downloader@v1.1
         with:
           repository: "WorldCereal/ewoc_classif"
@@ -64,11 +64,11 @@ jobs:
           tag: "${{ steps.cots-versions.outputs.EWOC_DAG }}"
           fileName: "ewoc_dag-${{ steps.cots-versions.outputs.EWOC_DAG }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
-      - name: Download Classification wrapper package
+      - name: Download Classification package
         uses: robinraju/release-downloader@v1.1
         with:
           repository: "WorldCereal/wc-classification"
-          tag: "v${{ steps.cots-versions.outputs.WORLDCEREAL_CLASSIF_VERSION }}"
+          tag: "${{ steps.cots-versions.outputs.WORLDCEREAL_CLASSIF_VERSION }}"
           fileName: "worldcereal-${{ steps.cots-versions.outputs.WORLDCEREAL_CLASSIF_VERSION }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Build Docker images
