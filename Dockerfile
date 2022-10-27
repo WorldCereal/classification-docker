@@ -28,7 +28,7 @@ RUN mkdir ${EWOC_AUXDATA}  \
     && wget -qO- https://artifactory.vgt.vito.be/auxdata-public/worldcereal/auxdata/biomes.tar.gz | tar xvz -C ${EWOC_AUXDATA}
 
 # Add models from s3
-RUN wget "https://ewoc-aux-data.s3.eu-central-1.amazonaws.com/models/models_cropland_605_croptype_502_irr_420.tar.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXJWPWGFXGK4RNF7R%2F20221026%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20221026T130135Z&X-Amz-Expires=14400&X-Amz-SignedHeaders=host&X-Amz-Signature=8cf363b0eb4e56e0f53de57ed8cbee58faafee276f8ea3ec48a7c3d4e5825c55" -O /tmp/models_cropland_605_croptype_502_irr_420.tar.gz  \
+RUN wget "https://ewoc-aux-data.s3.eu-central-1.amazonaws.com/models/models_cropland_605_croptype_502_irr_420.tar.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXJWPWGFXGK4RNF7R%2F20221027%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20221027T071434Z&X-Amz-Expires=432000&X-Amz-SignedHeaders=host&X-Amz-Signature=ab0e28bb863301604563f3cc4053f7b62c1cb47d6d594e39b1b3a94b13db2bda" -O /tmp/models_cropland_605_croptype_502_irr_420.tar.gz  \
     && tar -xzf /tmp/models_cropland_605_croptype_502_irr_420.tar.gz --strip-components 1 -C / && rm /tmp/models_cropland_605_croptype_502_irr_420.tar.gz
 
 ENV EWOC_CLASSIF_VENV=/opt/ewoc_classif_venv
