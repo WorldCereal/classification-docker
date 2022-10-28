@@ -61,7 +61,7 @@ RUN ${EWOC_CLASSIF_VENV}/bin/pip install  /tmp/ewoc_dag-${EWOC_DAG}.tar.gz --no-
     && ${EWOC_CLASSIF_VENV}/bin/pip install  /tmp/ewoc_classif-${EWOC_CLASSIF_VERSION}.tar.gz --no-cache-dir\
     && ${EWOC_CLASSIF_VENV}/bin/pip install  boto3 --no-cache-dir\
     && ${EWOC_CLASSIF_VENV}/bin/pip install  psycopg2-binary --no-cache-dir \
-    && ${EWOC_CLASSIF_VENV}/bin/pip install  rasterio==1.2.10 --no-cache-dir
+    && ${EWOC_CLASSIF_VENV}/bin/pip install  rfc5424-logging-handler --no-cache-dir
 
 ADD entrypoint.sh /opt
 RUN chmod +x /opt/entrypoint.sh
