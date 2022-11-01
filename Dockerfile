@@ -29,7 +29,7 @@ RUN mkdir ${EWOC_AUXDATA}  \
 
 # Add models from s3
 
-RUN wget -q "https://ewoc-aux-data.s3.eu-central-1.amazonaws.com/models/models_cropland_700_croptype_502_irr_420.tar.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXJWPWGFXGK4RNF7R%2F20221028%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20221028T164843Z&X-Amz-Expires=14400&X-Amz-SignedHeaders=host&X-Amz-Signature=bf243895975a2b5a4be949d243b97773d6dd3c5056fb1a29b1ce843ef9a12ac9" -O /tmp/models_cropland_700_croptype_502_irr_420.tar.gz \
+RUN wget -q "https://ewoc-aux-data.s3.eu-central-1.amazonaws.com/models/models_cropland_700_croptype_502_irr_420.tar.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXJWPWGFXGK4RNF7R%2F20221101%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20221101T081749Z&X-Amz-Expires=14400&X-Amz-SignedHeaders=host&X-Amz-Signature=a1882017809b7066fa948cee8bd5110d17a22eaaf0306506ae3623a2bc50045d" -O /tmp/models_cropland_700_croptype_502_irr_420.tar.gz \
     && tar -xzf /tmp/models_cropland_700_croptype_502_irr_420.tar.gz --strip-components 2 -C / \
     && rm /tmp/models_cropland_700_croptype_502_irr_420.tar.gz
 
