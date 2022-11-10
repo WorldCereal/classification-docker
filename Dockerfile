@@ -28,8 +28,8 @@ RUN mkdir ${EWOC_AUXDATA}  \
     && wget -qO- https://artifactory.vgt.vito.be/auxdata-public/worldcereal/auxdata/biomes.tar.gz | tar xvz -C ${EWOC_AUXDATA}
 
 # Add models from s3
-RUN wget -q "https://ewoc-aux-data.s3.eu-central-1.amazonaws.com/models/models_cropland_700_croptype_720_irr_420.tar.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXJWPWGFXGK4RNF7R%2F20221110%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20221110T125757Z&X-Amz-Expires=14400&X-Amz-SignedHeaders=host&X-Amz-Signature=32fa5b3cef495159674ef53b89f3df06e8e95f7cef4bc5182efe27c31d9ae399" -O /tmp/models_cropland_700_croptype_720_irr_420.tar.gz \
-    && tar -xzf /tmp/models_cropland_700_croptype_720_irr_420.tar.gz --strip-components 2 -C / \
+RUN wget -q "https://ewoc-aux-data.s3.eu-central-1.amazonaws.com/models/models_cropland_700_croptype_720_irr_420.tar.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXJWPWGFXGK4RNF7R%2F20221110%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20221110T203851Z&X-Amz-Expires=14400&X-Amz-SignedHeaders=host&X-Amz-Signature=a193e67b6a98b9693bb49115feee62290034edc0d8543a579d685006eca538bc" -O /tmp/models_cropland_700_croptype_720_irr_420.tar.gz \
+    && tar -xzf /tmp/models_cropland_700_croptype_720_irr_420.tar.gz -C / \
     && rm /tmp/models_cropland_700_croptype_720_irr_420.tar.gz
 
 ENV EWOC_CLASSIF_VENV=/opt/ewoc_classif_venv
@@ -53,7 +53,7 @@ ENV EWOC_CLASSIF_DOCKER_VERSION=${EWOC_CLASSIF_DOCKER_VERSION}
 LABEL version=${EWOC_CLASSIF_DOCKER_VERSION}
 LABEL EWOC_CLASSIF="${WORLDCEREAL_CLASSIF_VERSION}"
 
-ARG EWOC_CLASSIF_VERSION=0.7.1
+ARG EWOC_CLASSIF_VERSION=0.8.0
 ARG EWOC_DAG=0.8.6
 COPY ewoc_classif-${EWOC_CLASSIF_VERSION}.tar.gz /tmp
 COPY ewoc_dag-${EWOC_DAG}.tar.gz /tmp
