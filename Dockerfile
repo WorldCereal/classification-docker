@@ -27,11 +27,6 @@ ENV EWOC_AUXDATA=/auxdata/
 RUN mkdir ${EWOC_AUXDATA}  \
     && wget -qO- https://artifactory.vgt.vito.be/auxdata-public/worldcereal/auxdata/biomes.tar.gz | tar xvz -C ${EWOC_AUXDATA}
 
-# Add models from s3
-RUN wget -q "https://ewoc-aux-data.s3.eu-central-1.amazonaws.com/models/models_cropland_700_croptype_720_irr_420.tar.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXJWPWGFXGK4RNF7R%2F20221111%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20221111T085920Z&X-Amz-Expires=14400&X-Amz-SignedHeaders=host&X-Amz-Signature=59714003ed2943be9e0b7a74bca0fcef348de326a80514066186fe03f22fbeb6" -O /tmp/models_cropland_700_croptype_720_irr_420.tar.gz \
-    && tar -xzf /tmp/models_cropland_700_croptype_720_irr_420.tar.gz -C / \
-    && rm /tmp/models_cropland_700_croptype_720_irr_420.tar.gz
-
 ENV EWOC_CLASSIF_VENV=/opt/ewoc_classif_venv
 RUN python3 -m venv ${EWOC_CLASSIF_VENV}
 RUN source ${EWOC_CLASSIF_VENV}/bin/activate
@@ -43,17 +38,17 @@ ENV LOGURU_FORMAT='<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level
 RUN ${EWOC_CLASSIF_VENV}/bin/pip install "pip<22" --upgrade --no-cache-dir\
     && ${EWOC_CLASSIF_VENV}/bin/pip install "setuptools<61" --upgrade --no-cache-dir
 
-ARG WORLDCEREAL_CLASSIF_VERSION=1.0.9
+ARG WORLDCEREAL_CLASSIF_VERSION=1.0.10
 COPY worldcereal-${WORLDCEREAL_CLASSIF_VERSION}.tar.gz /tmp
 RUN ${EWOC_CLASSIF_VENV}/bin/pip install "pygdal==$(gdal-config --version).*" --no-cache-dir\
     && ${EWOC_CLASSIF_VENV}/bin/pip install /tmp/worldcereal-${WORLDCEREAL_CLASSIF_VERSION}.tar.gz --no-cache-dir --extra-index-url https://artifactory.vgt.vito.be/api/pypi/python-packages/simple
 
-ARG EWOC_CLASSIF_DOCKER_VERSION='0.7.0'
+ARG EWOC_CLASSIF_DOCKER_VERSION='0.9.0'
 ENV EWOC_CLASSIF_DOCKER_VERSION=${EWOC_CLASSIF_DOCKER_VERSION}
 LABEL version=${EWOC_CLASSIF_DOCKER_VERSION}
 LABEL EWOC_CLASSIF="${WORLDCEREAL_CLASSIF_VERSION}"
 
-ARG EWOC_CLASSIF_VERSION=0.8.0
+ARG EWOC_CLASSIF_VERSION=0.9.0
 ARG EWOC_DAG=0.8.6
 COPY ewoc_classif-${EWOC_CLASSIF_VERSION}.tar.gz /tmp
 COPY ewoc_dag-${EWOC_DAG}.tar.gz /tmp
@@ -63,6 +58,10 @@ RUN ${EWOC_CLASSIF_VENV}/bin/pip install  /tmp/ewoc_dag-${EWOC_DAG}.tar.gz --no-
     && ${EWOC_CLASSIF_VENV}/bin/pip install  boto3 --no-cache-dir\
     && ${EWOC_CLASSIF_VENV}/bin/pip install  psycopg2-binary --no-cache-dir \
     && ${EWOC_CLASSIF_VENV}/bin/pip install  rfc5424-logging-handler --no-cache-dir
+
+# Retrieve models from VITO artifactory
+RUN source ${EWOC_CLASSIF_VENV}/bin/activate \
+    && ewoc_get_models / -v
 
 ADD entrypoint.sh /opt
 RUN chmod +x /opt/entrypoint.sh
