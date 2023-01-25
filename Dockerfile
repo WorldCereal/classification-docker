@@ -43,12 +43,12 @@ COPY worldcereal-${WORLDCEREAL_CLASSIF_VERSION}.tar.gz /tmp
 RUN ${EWOC_CLASSIF_VENV}/bin/pip install "pygdal==$(gdal-config --version).*" --no-cache-dir\
     && ${EWOC_CLASSIF_VENV}/bin/pip install /tmp/worldcereal-${WORLDCEREAL_CLASSIF_VERSION}.tar.gz --no-cache-dir --extra-index-url https://artifactory.vgt.vito.be/api/pypi/python-packages/simple
 
-ARG EWOC_CLASSIF_DOCKER_VERSION='0.10.1'
+ARG EWOC_CLASSIF_DOCKER_VERSION='0.10.2'
 ENV EWOC_CLASSIF_DOCKER_VERSION=${EWOC_CLASSIF_DOCKER_VERSION}
 LABEL version=${EWOC_CLASSIF_DOCKER_VERSION}
 LABEL EWOC_CLASSIF="${WORLDCEREAL_CLASSIF_VERSION}"
 
-ARG EWOC_CLASSIF_VERSION=0.10.1
+ARG EWOC_CLASSIF_VERSION=0.10.2
 ARG EWOC_DAG=0.8.7
 COPY ewoc_classif-${EWOC_CLASSIF_VERSION}.tar.gz /tmp
 COPY ewoc_dag-${EWOC_DAG}.tar.gz /tmp
