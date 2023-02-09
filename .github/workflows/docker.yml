@@ -51,7 +51,7 @@ jobs:
         run: |
           sed -n '/^ARG/s/ARG *\(.*\)=\(.*\)/::set-output name=\1::\2/p' Dockerfile
       - name: Download Classification wrapper package
-        uses: robinraju/release-downloader@v1.1
+        uses: robinraju/release-downloader@v1.7
         with:
           repository: "WorldCereal/ewoc_classif"
           tag: "${{ steps.cots-versions.outputs.EWOC_CLASSIF_VERSION }}"
