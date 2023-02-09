@@ -86,4 +86,9 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: 643vlk6z.gra7.container-registry.ovh.net/world-cereal/ewoc_classif:${{ steps.branch-name.outputs.NAME }}
-          run: /opt/entrypoint.sh python --version && /opt/entrypoint.sh pip show ewoc_classif && /opt/entrypoint.sh pip list && /opt/entrypoint.sh ewoc_classif --help
+          run: \
+            /opt/entrypoint.sh python --version &&
+            /opt/entrypoint.sh pip show ewoc_classif &&
+            /opt/entrypoint.sh pip list &&
+            /opt/entrypoint.sh ewoc_generate_prd --help &&
+            /opt/entrypoint.sh ewoc_generate_blocks --help
