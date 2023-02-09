@@ -15,7 +15,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.3.0
       - name: Login to Docker Registry
         uses: docker/login-action@v1
         if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
@@ -25,7 +25,7 @@ jobs:
           password: ${{ secrets.CS_HARBOR_V2_TOKEN }}
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4.3.0
         with:
           # list of Docker images to use as base name for tags
           images: |
@@ -58,21 +58,21 @@ jobs:
           fileName: "ewoc_classif-${{ steps.cots-versions.outputs.EWOC_CLASSIF_VERSION }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Download ewoc_dag
-        uses: robinraju/release-downloader@v1.1
+        uses: robinraju/release-downloader@v1.7
         with:
           repository: "WorldCereal/ewoc_dataship"
           tag: "${{ steps.cots-versions.outputs.EWOC_DAG }}"
           fileName: "ewoc_dag-${{ steps.cots-versions.outputs.EWOC_DAG }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Download Classification package
-        uses: robinraju/release-downloader@v1.1
+        uses: robinraju/release-downloader@v1.7
         with:
           repository: "WorldCereal/wc-classification"
           tag: "${{ steps.cots-versions.outputs.WORLDCEREAL_CLASSIF_VERSION }}"
           fileName: "worldcereal-${{ steps.cots-versions.outputs.WORLDCEREAL_CLASSIF_VERSION }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Build Docker images
-        uses: docker/build-push-action@v2.5.0
+        uses: docker/build-push-action@v4.0.0
         with:
           push: ${{ startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' }}
           tags: ${{ steps.meta.outputs.tags }}
@@ -86,7 +86,7 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: 643vlk6z.gra7.container-registry.ovh.net/world-cereal/ewoc_classif:${{ steps.branch-name.outputs.NAME }}
-          run: \
+          run: |
             /opt/entrypoint.sh python --version &&
             /opt/entrypoint.sh pip show ewoc_classif &&
             /opt/entrypoint.sh pip list &&
