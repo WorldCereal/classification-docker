@@ -6,6 +6,9 @@ WORKDIR /tmp
 ENV LANG=en_US.utf8
 SHELL ["/bin/bash", "-c"]
 
+ARG EWOC_SYSTEM_VERSION=0.1.0
+COPY ewoc_system-{EWOC_SYSTEM_VERSION}-py2.py3-none-any.whl /tmp
+
 RUN apt-get update -y \
 && DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common \
 && apt-get update -y \
@@ -60,8 +63,7 @@ RUN ${EWOC_CLASSIF_VENV}/bin/pip install  /tmp/ewoc_dag-${EWOC_DAG}.tar.gz --no-
     && ${EWOC_CLASSIF_VENV}/bin/pip install  psycopg2-binary --no-cache-dir \
     && ${EWOC_CLASSIF_VENV}/bin/pip install  rfc5424-logging-handler --no-cache-dir
 
-ARG EWOC_SYSTEM_VERSION=0.1.0
-COPY ewoc_system-{EWOC_SYSTEM_VERSION}-py2.py3-none-any.whl  /tmp
+
 RUN ${EWOC_CLASSIF_VENV}/bin/pip install --target /scripts /tmp/ewoc_system-{EWOC_SYSTEM_VERSION}-py2.py3-none-any.whl
 
 # Retrieve models from VITO artifactory
