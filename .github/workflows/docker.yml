@@ -71,6 +71,13 @@ jobs:
           tag: "${{ steps.cots-versions.outputs.WORLDCEREAL_CLASSIF_VERSION }}"
           fileName: "worldcereal-${{ steps.cots-versions.outputs.WORLDCEREAL_CLASSIF_VERSION }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
+      - name: Download ewoc_system package
+        uses: robinraju/release-downloader@v1.7
+        with:
+          repository: "WorldCereal/ewoc_system"
+          tag: "${{ steps.cots-versions.outputs.EWOC_SYSTEM_VERSION }}"
+          fileName: "ewoc_system-${{ steps.cots-versions.outputs.EWOC_SYSTEM_VERSION }}-py2.py3-none-any.whl"
+          token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Build Docker images
         uses: docker/build-push-action@v4.0.0
         with:
