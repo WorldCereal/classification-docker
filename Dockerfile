@@ -7,7 +7,7 @@ ENV LANG=en_US.utf8
 SHELL ["/bin/bash", "-c"]
 
 ARG EWOC_SYSTEM_VERSION=0.1.0
-COPY ewoc_system-{EWOC_SYSTEM_VERSION}-py2.py3-none-any.whl /tmp
+COPY ewoc_system-0.1.0-py2.py3-none-any.whl /tmp
 
 RUN apt-get update -y \
 && DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common \
