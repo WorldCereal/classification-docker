@@ -63,8 +63,7 @@ RUN ${EWOC_CLASSIF_VENV}/bin/pip install  /tmp/ewoc_dag-${EWOC_DAG}.tar.gz --no-
     && ${EWOC_CLASSIF_VENV}/bin/pip install  psycopg2-binary --no-cache-dir \
     && ${EWOC_CLASSIF_VENV}/bin/pip install  rfc5424-logging-handler --no-cache-dir
 
-
-RUN ${EWOC_CLASSIF_VENV}/bin/pip install --target /scripts /tmp/ewoc_system-{EWOC_SYSTEM_VERSION}-py2.py3-none-any.whl
+RUN ${EWOC_CLASSIF_VENV}/bin/pip install --target /scripts /tmp/ewoc_system-${EWOC_SYSTEM_VERSION}-py2.py3-none-any.whl
 
 # Retrieve models from VITO artifactory
 RUN source ${EWOC_CLASSIF_VENV}/bin/activate \

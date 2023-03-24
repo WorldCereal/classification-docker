@@ -98,4 +98,5 @@ jobs:
             /opt/entrypoint.sh pip show ewoc_classif &&
             /opt/entrypoint.sh pip list &&
             /opt/entrypoint.sh ewoc_generate_prd --help &&
-            /opt/entrypoint.sh ewoc_generate_block --help
+            /opt/entrypoint.sh ewoc_generate_block --help &&
+            ll /scripts
